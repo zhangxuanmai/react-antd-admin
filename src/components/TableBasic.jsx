@@ -137,10 +137,10 @@ class TableBasic extends React.Component {
             }}
           >
             <Column
-              title="Avatar"
-              dataIndex="avatar"
-              key="avatar"
-              render={(text, record) => (<Avatar size="small" src={record.avatar} />)}
+              title="Index"
+              dataIndex="index"
+              key="index"
+              render={(text, record, index) => `${((this.state.current - 1) * 10) + (index + 1)}`}
             />
             <Column title="Username" dataIndex="username" key="username" />
             <Column title="Nickname" dataIndex="nickname" key="nickname" />
