@@ -48,7 +48,7 @@ function BasicLayout({ loginStatus, routes, logout, location }) {
         <Siderbar routes={routes} defaultOpenKeys={defaultOpenKeys} selectedKeys={selectedKeys} />
         <Layout style={{ minHeight: '100vh' }}>
           <Headerbar handleLogout={handleLogout} />
-          <ContentComponent routes={routes} />
+          <ContentComponent routes={routes}/>
           <FooterComponent />
         </Layout>
       </Layout>

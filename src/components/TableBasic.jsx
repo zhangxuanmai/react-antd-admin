@@ -14,7 +14,7 @@ class TableBasic extends React.Component {
     visible: false,
     visible2: false,
     defaultCurrent: 1,
-    defaultPageSize: 15,
+    defaultPageSize: 10,
     total: 1,
     current: 1,
     modalData: {},
