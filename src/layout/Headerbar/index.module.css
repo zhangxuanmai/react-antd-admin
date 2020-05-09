@@ -1,0 +1,16 @@
+.header {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  background: #fff !important;
+  box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
+}
+
+.block {
+  padding: 0 14px;
+  cursor: pointer;
+}
+
+.block:hover {
+  background-color: rgba(0, 0, 0, 0.025);
+}

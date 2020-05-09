@@ -1,0 +1,32 @@
+.loginWrapper {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: rgb(240, 242, 245);
+}
+
+.main {
+  width: 280px;
+  padding: 32px;
+  background-color: rgb(251, 251, 251);
+  box-shadow: 0 0 14px 1px rgb(231, 231, 231);
+}
+
+.form {
+  width: 100%;
+}
+
+.slogan {
+  margin: 14px 0 32px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.logo {
+  margin-right: 8px;
+  width: 32px;
+  height: 32px;
+}

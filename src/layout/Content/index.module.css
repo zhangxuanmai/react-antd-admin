@@ -1,0 +1,9 @@
+.content {
+  margin: 24px 24px 0;
+}
+
+.loading {
+  padding: 24px 16px 16px;
+  text-align: center;
+  background: rgba(170, 170, 170, 0.05);
+}

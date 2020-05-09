@@ -1,0 +1,25 @@
+.title {
+  margin: 16px 0;
+  padding: 0 24px;
+
+  display: flex;
+  justify-content: center;
+  flex-wrap: nowrap;
+  align-items: center;
+
+  font-weight: 600;
+  font-size: 20px;
+  white-space: nowrap;
+  color: white;
+
+  background: #001529;
+  overflow: hidden;
+  transition: all 0.3s;
+
+}
+
+.logo {
+  margin-right: 8px;
+  width: 32px;
+  height: 32px;
+}
