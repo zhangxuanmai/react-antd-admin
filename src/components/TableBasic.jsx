@@ -14,7 +14,7 @@ class TableBasic extends React.Component {
     visible: false,
     visible2: false,
     defaultCurrent: 1,
-    defaultPageSize: 10,
+    defaultPageSize: 15,
     total: 1,
     current: 1,
     modalData: {},
@@ -125,6 +125,7 @@ class TableBasic extends React.Component {
           <Table
             rowKey="id"
             size="middle"
+            scroll={{ y: 560 }}
             loading={this.state.loading}
             dataSource={this.state.dataSource}
             onChange={this.onChange}
