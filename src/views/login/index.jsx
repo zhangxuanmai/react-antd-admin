@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
+import { Redirect } from 'react-router-dom'
 import { Form, Input, Button, Checkbox } from 'antd'
 import { UserOutlined, LockOutlined } from '@ant-design/icons'
 import { actionCreators } from '../../store/login'
@@ -8,17 +9,23 @@ import logo from '../../assets/logo.svg'
 import style from "./index.module.css"
 
 function Login(props) {
+  const { loginStatus } = props
   const [form] = Form.useForm()
   const [initialValues, setInitialValues] = useState({})
 
   const handleFormFinish = (values) => {
     const { remember } = values
+
     if (remember) {
       localStorage.setItem('deer-design-pro-loginInfomation', JSON.stringify(values))
     } else {
       localStorage.removeItem('deer-design-pro-loginInfomation')
     }
-    props.login(values)
+
+    // props.login(values)
+    props.history.push({
+      pathname: '/admin'
+    })
   }
 
   useEffect(() => {
@@ -26,8 +33,7 @@ function Login(props) {
     loginInfomation && form && form.setFieldsValue(JSON.parse(loginInfomation))
   }, [form])
 
-  return (
-
+  const login = (
     <div className={style.loginWrapper} >
       <section className={style.main}>
         <div className={style.slogan}>
@@ -61,9 +67,21 @@ function Login(props) {
       </section>
     </div>
   )
+
+  const admin = (
+    <Redirect to="/admin" />
+  )
+
+  // return loginStatus ? admin : login
+  return login
 }
 
-export default connect(null, (dispatch) => {
+
+export default connect((state) => {
+  return {
+    loginStatus: state.getIn(['login', 'loginStatus'])
+  }
+}, (dispatch) => {
   return {
     login: bindActionCreators(actionCreators.loginAction, dispatch)
   }

@@ -8,6 +8,7 @@ import Siderbar from './Siderbar/Siderbar'
 import Headerbar from './Headerbar/Headerbar'
 import ContentComponent from './Content'
 import FooterComponent from './Footer'
+import router from '../router/siber-router'
 
 const createAllPathArr = (routes) => {
   let _ = []
