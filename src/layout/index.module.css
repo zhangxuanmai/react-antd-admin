@@ -1,0 +1,41 @@
+
+.nav {
+  padding: 0;
+  margin: 0;
+
+
+  list-style: none;
+  z-index: 999;
+  background: red; 
+}
+
+.content {
+  position: fixed;
+  left: 260px;
+  right: 0;
+  /* top: 0;
+  bottom: 0; */
+  min-height: 100vh;
+  color: aliceblue;
+  z-index: 99;
+}
+
+.red {
+  background: brown;
+}
+
+.blue {
+  background: blue;
+}
+
+.pink {
+  background: pink;
+}
+
+.green {
+  background: green;
+}
+
+.block {
+  display: block;
+}
