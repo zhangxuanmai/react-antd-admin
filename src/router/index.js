@@ -1,20 +1,21 @@
-import React, { lazy } from 'react'
+import React from 'react'
 import { Route, Redirect } from "react-router-dom"
-import TransitionLayout from '../layout/TransitionLayout'
-import UserLayout from '../layout/UserLayout'
-import BasicLayout from '../layout/BasicLayout'
-import NotLayout from '../views/404'
-import * as Icon from '@ant-design/icons'
-
+import Login from '../views/login';
+import Admin from '../layout/index';
+import NotFound from '../views/404';
+import * as Icon from '@ant-design/icons';
+import Dashboard from '../components/Dashboard';
+import TableBasic from '../components/TableBasic';
+import FormBasic from '../components/FormBasic';
+import Descriptions from '../components/Descriptions';
 
 const RouteWithSubRoutes = route => {
-  if (route.redirect) {
-    return <Redirect to={route.redirect} />
-  }
   return (
     <Route
       path={route.path}
       render={props => {
+        // pass the sub-routes down to keep nesting
+        if (route.redirect) return (<Redirect to={route.redirect} />)
         return (<route.component {...props} routes={route.routes} />)
       }}
     />
@@ -33,15 +34,15 @@ const routes = [
   {
     path: '/',
     exact: true,
-    component: TransitionLayout,
+    component: Login,
   },
   {
     path: '/login',
-    component: UserLayout,
+    component: Login,
   },
   {
     path: '/admin',
-    component: BasicLayout,
+    component: Admin,
     routes: [
       {
         path: '/admin',
@@ -52,7 +53,7 @@ const routes = [
         path: "/admin/home",
         title: "Dashboard",
         icon: Icon.DashboardOutlined,
-        component: lazy(() => import('../components/Dashboard')),
+        component: Dashboard,
       },
       {
         path: "/admin/examples",
@@ -61,33 +62,33 @@ const routes = [
         routes: [
           {
             path: "/admin/examples/table-list", // 路由路径
-            exact: true, // 严格匹配路由
+            // exact: true, // 严格匹配路由
             title: "Table",
-            component: lazy(() => import('../components/TableBasic')),
+            component: TableBasic,
           },
           {
             path: "/admin/examples/table-details",
             linkPath: "/admin/examples/table-list", // 将该侧栏和父级侧栏关联
             hidden: true, // 隐藏该项侧栏
             title: "Descriptions", // 侧栏标题
-            component: lazy(() => import('../components/Descriptions')), // 显示内容
+            component: Descriptions, // 显示内容
           },
           {
             path: "/admin/examples/form",
             title: "Form",
-            component: lazy(() => import('../components/FormBasic')),
+            component: FormBasic,
           },
         ]
       },
       {
-        component: NotLayout
+        component: NotFound
       }
     ]
   },
   {
-    component: NotLayout
+    component: NotFound
   }
-];
+]
 
 export {
   RouteWithSubRoutes,

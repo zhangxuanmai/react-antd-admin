@@ -11,7 +11,7 @@ import style from "./index.module.css"
 function Login(props) {
   const { loginStatus } = props
   const [form] = Form.useForm()
-  const [initialValues, setInitialValues] = useState({})
+  const [initialValues] = useState({})
 
   const handleFormFinish = (values) => {
     const { remember } = values
@@ -22,10 +22,7 @@ function Login(props) {
       localStorage.removeItem('deer-design-pro-loginInfomation')
     }
 
-    // props.login(values)
-    props.history.push({
-      pathname: '/admin'
-    })
+    props.login(values)
   }
 
   useEffect(() => {
@@ -43,7 +40,7 @@ function Login(props) {
         <Form
           form={form}
           className={style.form}
-          name="basic"
+          name="login"
           initialValues={initialValues}
           onFinish={handleFormFinish}
         >
@@ -72,8 +69,7 @@ function Login(props) {
     <Redirect to="/admin" />
   )
 
-  // return loginStatus ? admin : login
-  return login
+  return loginStatus ? admin : login
 }
 
 

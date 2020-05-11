@@ -1,50 +1,42 @@
 import React, { useMemo } from 'react'
-import { Switch, withRouter, Route } from 'react-router-dom'
-import { Spin, Layout } from 'antd'
-import { createBasicRoutes } from '../../router'
-import style from './index.module.css'
-
+import { Switch, withRouter } from 'react-router-dom'
+import { Layout } from 'antd'
 import { TransitionGroup, CSSTransition } from 'react-transition-group'
+import { createBasicRoutes } from '../../router'
+// import style from './index.module.css'
 
 const { Content } = Layout
 
-const Red = () => (
-  <div style={{ height: 400, background: 'red' }}>
-    red
-  </div>
-);
-const Yellow = () => (
-  <div style={{ height: 400, background: 'yellow' }}>
-    yellow
-  </div>
-);
-const Green = () => (
-  <div style={{ height: 400, background: 'green' }}>
-    green
-  </div>
-);
 
 function ContentComponent(props) {
   const { routes, location } = props
-  const loading = (
-    <div className={style.loading}>
-      <Spin tip="Loading..." />
-    </div>
-  )
+
+  const key = useMemo(() => {
+    return location.pathname
+  }, [location])
 
   return (
-    <Content className={style.content}>
-      <React.Suspense fallback={null}>
-
-        <TransitionGroup>
-          <CSSTransition key={location.key} classNames="fade" timeout={300}>
-            <Switch location={location}>
-              {createBasicRoutes(routes)}
-            </Switch>
-          </CSSTransition>
-        </TransitionGroup>
-
-      </React.Suspense>
+    <Content>
+      <TransitionGroup>
+        <CSSTransition
+          key={key}
+          classNames={{
+            exit: "animate__animated animate__fadeOut",
+            exitActive: "animate__animated animate__fadeOut",
+            enter: "animate__animated animate__fadeIn",
+            enterActive: "animate__animated animate__fadeIn",
+          }}
+          timeout={600}
+        >
+          <div style={{ position: 'relative' }}>
+            <div style={{ position: 'absolute', top: 0, right: 0, left: 0, margin: 24 }}>
+              <Switch location={location}>
+                {createBasicRoutes(routes)}
+              </Switch>
+            </div>
+          </div>
+        </CSSTransition>
+      </TransitionGroup>
     </Content>
   )
 }

@@ -8,10 +8,10 @@ export const logoutAction = () => ({
 
 export const loginAction = (params) => {
   request.post('/login').then(res => {
-    console.log(res)
+    console.log('mock login:', res)
   })
   request.get('/api/login.json').then(res => {
-    console.log(res)
+    console.log('json login:', res)
   })
   return (dispatch) => {
     const action = {

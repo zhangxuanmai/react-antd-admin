@@ -1,15 +1,19 @@
 import React from 'react'
-import { BrowserRouter, Switch, Route, Link } from 'react-router-dom'
-import { routes, RouteWithSubRoutes } from './router'
-import Login from './views/login';
-import Admin from './layout';
+import { BrowserRouter, Switch } from 'react-router-dom'
+import { RouteWithSubRoutes, routes } from './router'
+
 
 function App() {
   return (
     <BrowserRouter>
-      <Route exact path="/" component={Login} />
-      <Route path="/login" component={Login} />
-      <Route path="/admin" component={Admin} />
+      <Switch>
+        {routes.map((route, i) => <RouteWithSubRoutes key={i} {...route} />)}
+        {
+          /* <Route exact path="/" component={Login} />
+          <Route path="/login" component={Login} />
+          <Route path="/admin" component={Admin} />  */
+        }
+      </Switch>
     </BrowserRouter>
   )
 }
