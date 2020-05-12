@@ -90,9 +90,9 @@ export default class TableBasic extends Component {
 
   onModalComfirm = async (params) => {
     const result = await this.modalForm.current.validateFields()
-    if (result) {
-      const values = this.modalForm.current.getFieldsValue()
 
+    if (result) {
+      // const values = this.modalForm.current.getFieldsValue()
       this.setState({
         confirmLoading: true,
       });

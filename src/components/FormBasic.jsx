@@ -14,6 +14,7 @@ import {
 } from 'antd'
 import { UploadOutlined } from '@ant-design/icons'
 import WrapperSection from './WrapperSection'
+import SelectedTags from './SelectedTags'
 
 const { Option } = Select
 
@@ -112,7 +113,7 @@ export class FormBasic extends Component {
             onFinishFailed={this.onFinishFailed}
             initialValues={this.state.initialValues}
             {...layout}
-            >
+          >
             <Form.Item
               label="input"
               name="input"
@@ -149,6 +150,12 @@ export class FormBasic extends Component {
               valuePropName="checked"
             >
               <Switch />
+            </Form.Item>
+            <Form.Item
+              label="selectTags"
+              name="selectTags"
+            >
+              <SelectedTags onChange={(value) => console.log(value)} />
             </Form.Item>
             <Form.Item
               label="select"
