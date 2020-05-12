@@ -11,6 +11,7 @@ import {
   Row,
   Col,
   Modal,
+  Tag,
   message
 } from 'antd';
 import {
@@ -35,6 +36,7 @@ export default class TableBasic extends Component {
 
     visible: false,
     confirmLoading: false,
+    modalTitle: '新增账户',
   }
 
   onSearch = (values) => {
@@ -50,12 +52,18 @@ export default class TableBasic extends Component {
   };
 
   onInsert = (params) => {
-    this.setState({ visible: true });
+    this.setState({
+      modalTitle: '新增账户',
+      visible: true
+    });
   };
 
   onEdit = async (record) => {
     const { name, password, phone } = record;
-    await this.setState({ visible: true });
+    await this.setState({
+      modalTitle: '编辑账户',
+      visible: true
+    });
     this.modalForm.current.setFieldsValue({
       name,
       password,
@@ -181,7 +189,12 @@ export default class TableBasic extends Component {
             <Column title="手机号码" dataIndex="phone" />
             <Column title="最后登录时间" dataIndex="date" />
             <Column title="最后登录IP" dataIndex="ip" />
-            <Column title="状态" dataIndex="status" />
+            <Column title="状态" dataIndex="status" render={(text, record) => {
+              const { status } = record
+              return status
+                ? <Tag color="success">启用</Tag>
+                : <Tag color="default">禁用</Tag>
+            }} />
             <Column title="创建时间" dataIndex="date" />
             <Column
               title="操作"
@@ -203,8 +216,6 @@ export default class TableBasic extends Component {
                       <a>{txt}</a>
                     </Popconfirm>
                     <Divider type="vertical" />
-                    <a onClick={() => this.onEdit(record)}>操作记录</a>
-                    <Divider type="vertical" />
                     <Popconfirm
                       title="确定删除吗?"
                       onConfirm={() => this.onDelete(record)}
@@ -219,7 +230,7 @@ export default class TableBasic extends Component {
         </Wrapper>
 
         <Modal
-          title="新增账户"
+          title={this.state.modalTitle}
           visible={this.state.visible}
           confirmLoading={this.state.confirmLoading}
           onCancel={this.onModalCancel}
