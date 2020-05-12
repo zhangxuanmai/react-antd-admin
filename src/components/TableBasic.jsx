@@ -1,228 +1,286 @@
-import React from 'react'
-import { Form, Input, Button, Table, Avatar, Modal, Descriptions, Divider } from 'antd'
-import WrapperSection from './WrapperSection'
-import { getData } from '../api/index'
+import React, { Component } from 'react';
+import Wrapper from '../components/WrapperSection';
+import {
+  Form,
+  Input,
+  Button,
+  DatePicker,
+  Table,
+  Divider,
+  Popconfirm,
+  Row,
+  Col,
+  Modal,
+  message
+} from 'antd';
+import {
+  SearchOutlined,
+  PlusOutlined
+} from '@ant-design/icons';
+import axios from 'axios';
 
-const { Column } = Table
+const { RangePicker } = DatePicker;
+const { Column } = Table;
 
-class TableBasic extends React.Component {
-  form = React.createRef()
-  formRef = React.createRef()
+export default class TableBasic extends Component {
+  form = React.createRef();
+  modalForm = React.createRef();
+
   state = {
-    keywords: "",
     loading: false,
-    visible: false,
-    visible2: false,
-    defaultCurrent: 1,
-    defaultPageSize: 15,
-    total: 1,
+    data: [],
     current: 1,
-    modalData: {},
-    dataSource: [],
-    record: {},
+    defaultPageSize: 15,
+    total: 0,
+
+    visible: false,
+    confirmLoading: false,
   }
 
-  componentDidMount() {
+  onSearch = (values) => {
+    console.log('form:', values);
+    console.log('state:', this.state);
     this.doFetch()
-  }
+  };
 
-  doFetch = async () => {
-    this.setState(() => ({ loading: true }))
-    const result = await getData()
-    this.setState(() => ({
-      dataSource: result.data.data,
-      total: result.total,
-      loading: false
-    }))
-  }
+  onTableChange = async (pagination) => {
+    const { current } = pagination;
+    await this.setState({ current });
+    await this.doFetch();
+  };
 
+  onInsert = (params) => {
+    this.setState({ visible: true });
+  };
 
+  onEdit = async (record) => {
+    const { name, password, phone } = record;
+    await this.setState({ visible: true });
+    this.modalForm.current.setFieldsValue({
+      name,
+      password,
+      phone,
+    });
+  };
 
-  onFinish = () => {
-    const { keywords } = this.form.current.getFieldValue()
-    this.setState(() => ({ keywords, current: 1 }))
-    this.doFetch()
-  }
-
-  onReset = () => {
-    this.form.current.resetFields()
-    this.setState(() => ({ keywords: "" }))
-    this.onFinish()
-  }
-
-  onModal = (record) => {
-    this.setState(() => ({
-      visible: true,
-      modalData: record,
-    }))
-  }
-
-  onDetail = (record) => {
+  onDetail = ({ id }) => {
     this.props.history.push({
       pathname: '/admin/examples/table-details',
       state: {
-        id: record.id,
+        id
       }
     })
-  }
+  };
 
-  onChange = (pagination) => {
-    const { current } = pagination
-    this.setState(() => ({ current }))
+  onDelete = (params) => {
+    console.log(params);
+  };
+
+  onModalCancel = (params) => {
+    this.setState({ visible: false });
+  };
+
+  onModalComfirm = async (params) => {
+    const result = await this.modalForm.current.validateFields()
+    if (result) {
+      const values = this.modalForm.current.getFieldsValue()
+
+      this.setState({
+        confirmLoading: true,
+      });
+
+      setTimeout(() => {
+        message.success('操作成功')
+        this.setState({
+          visible: false,
+          confirmLoading: false,
+        });
+      }, 2000);
+    }
+  };
+
+  doFetch() {
+    this.setState({ loading: true })
+    axios.get('/table').then(res => {
+      this.setState({
+        data: res.data.data,
+        total: res.data.total,
+        loading: false,
+      })
+    })
+  };
+
+  componentDidMount() {
     this.doFetch()
-  }
-
-  onModalComfirm = () => {
-    this.onModalCancel()
-  }
-
-  onModalCancel = () => {
-    this.setState(() => ({ visible: false }))
-  }
-
-  onInsert = (record) => {
-    this.setState(() => ({
-      visible2: true,
-      record: record,
-    }))
-  }
-
-  onModalComfirm2 = () => {
-    console.log(1);
-    this.setState(() => ({ visible2: false }))
-    this.onModalCancel2()
-  }
-
-  onModalCancel2 = () => {
-    this.setState(() => ({ visible2: false }))
-  }
-
+  };
 
   render() {
-
     return (
-      <React.Fragment>
-        <WrapperSection>
+      <div>
+        <Wrapper style={{ paddingBottom: 0 }}>
           <Form
-            layout="inline"
             name="advanced_search"
-            className="ant-advanced-search-form"
             ref={this.form}
-            onFinish={this.onFinish}
+            onFinish={this.onSearch}
           >
-            <Form.Item name="keywords" label="Keywords">
-              <Input style={{ width: 240 }} placeholder="Please enter key words" />
-            </Form.Item>
-            <Form.Item>
-              <Button type="primary" htmlType="submit">Search</Button>
-            </Form.Item>
-            <Form.Item>
-              <Button onClick={this.onReset} >Reset</Button>
-            </Form.Item>
+            <Row gutter={24}>
+              <Col span={6}>
+                <Form.Item
+                  name="keywords"
+                  label="关键词"
+                >
+                  <Input placeholder="请输入关键词" allowClear />
+                </Form.Item>
+              </Col>
+              <Col span={6}>
+                <Form.Item
+                  name="date"
+                  label="日期时间"
+                >
+                  <RangePicker style={{ width: '100%' }} />
+                </Form.Item>
+              </Col>
+              <Col span={6}>
+                <Form.Item>
+                  <Button type="primary" htmlType="submit" icon={<SearchOutlined />}>查询</Button>
+                </Form.Item>
+              </Col>
+            </Row>
+
           </Form>
-        </WrapperSection>
-        <WrapperSection style={{ marginBottom: 0, padding: 0 }}>
+        </Wrapper>
+        <Wrapper style={{ margin: 0 }}>
+          <Button
+            type="primary"
+            icon={<PlusOutlined />}
+            onClick={this.onInsert}
+          >
+            新增
+            </Button>
+        </Wrapper>
+        <Wrapper style={{ padding: 0 }}>
           <Table
             rowKey="id"
             size="middle"
             loading={this.state.loading}
-            dataSource={this.state.dataSource}
-            onChange={this.onChange}
+            dataSource={this.state.data}
+            onChange={this.onTableChange}
             pagination={{
               position: ['bottomCenter'],
               current: this.state.current,
-              defaultCurrent: this.state.defaultCurrent,
               defaultPageSize: this.state.defaultPageSize,
               total: this.state.total
             }}
           >
             <Column
-              title="Index"
+              title="序号"
               dataIndex="index"
-              key="index"
-              render={(text, record, index) => `${((this.state.current - 1) * 10) + (index + 1)}`}
+              render={(text, record, index) => `${((this.state.current - 1) * this.state.defaultPageSize) + (index + 1)}`}
             />
-            <Column title="Username" dataIndex="username" key="username" />
-            <Column title="Nickname" dataIndex="nickname" key="nickname" />
-            <Column title="Phone Number" dataIndex="phone" key="phone" />
-            <Column title="Date Time" dataIndex="createtime" key="createtime" />
+            <Column title="用户名" dataIndex="name" />
+            <Column title="手机号码" dataIndex="phone" />
+            <Column title="最后登录时间" dataIndex="date" />
+            <Column title="最后登录IP" dataIndex="ip" />
+            <Column title="状态" dataIndex="status" />
+            <Column title="创建时间" dataIndex="date" />
             <Column
-              title="Action"
+              title="操作"
               key="action"
-              render={(text, record) => (
-                <span>
-                  <span
-                    style={{ cursor: 'pointer', color: '#1890ff' }}
-                    onClick={() => this.onModal(record)}
-                  >Modal</span>
-                  <Divider type="vertical" />
-                  <span
-                    style={{ cursor: 'pointer', color: '#1890ff' }}
-                    onClick={() => this.onInsert(record)}
-                  >Action</span>
-                  <Divider type="vertical" />
-                  <span
-                    style={{ cursor: 'pointer', color: '#1890ff' }}
-                    onClick={() => this.onDetail(record)}
-                  >Details</span>
-                </span>
-              )}
+              render={(text, record) => {
+                const { status } = record
+                const title = status ? '确定禁用该账户吗?' : '确定启用该账户吗?'
+                const txt = status ? '禁用' : '启用'
+                return (
+                  <span>
+                    <a onClick={() => this.onEdit(record)}>编辑</a>
+                    <Divider type="vertical" />
+                    <a onClick={() => this.onDetail(record)}>详情</a>
+                    <Divider type="vertical" />
+                    <Popconfirm
+                      title={title}
+                      onConfirm={() => this.onDelete(record)}
+                    >
+                      <a>{txt}</a>
+                    </Popconfirm>
+                    <Divider type="vertical" />
+                    <a onClick={() => this.onEdit(record)}>操作记录</a>
+                    <Divider type="vertical" />
+                    <Popconfirm
+                      title="确定删除吗?"
+                      onConfirm={() => this.onDelete(record)}
+                    >
+                      <a>删除</a>
+                    </Popconfirm>
+                  </span>
+                )
+              }}
             />
           </Table>
-        </WrapperSection>
+        </Wrapper>
+
         <Modal
-          title="User Info"
+          title="新增账户"
           visible={this.state.visible}
+          confirmLoading={this.state.confirmLoading}
           onCancel={this.onModalCancel}
-          footer={[
-            <Button key="submit" type="primary" onClick={this.onModalComfirm}>
-              Close
-            </Button>,
-          ]}
-        >
-          <Descriptions column={2}>
-            <Descriptions.Item label="Avatar">
-              <Avatar src={this.state.modalData.avatar} />
-            </Descriptions.Item>
-            <Descriptions.Item label="Username">
-              {this.state.modalData.username}
-            </Descriptions.Item>
-            <Descriptions.Item label="Nickname">
-              {this.state.modalData.nickname}
-            </Descriptions.Item>
-            <Descriptions.Item label="Phone Number">
-              {this.state.modalData.phone}
-            </Descriptions.Item>
-            <Descriptions.Item label="Date Time">
-              {this.state.modalData.createtime}
-            </Descriptions.Item>
-          </Descriptions>
-        </Modal>
-        <Modal
-          title="User Edit Info"
-          visible={this.state.visible2}
-          onCancel={this.onModalCancel2}
-          onOk={this.onModalComfirm2}
+          onOk={this.onModalComfirm}
           destroyOnClose={true}
         >
           <Form
             labelCol={{ span: 4 }}
-            wrapperCol={{ span: 20 }}
-            ref={this.formRef}
-            initialValues={this.state.record}
-            name="advanced_modal"
+            wrapperCol={{ span: 18 }}
+            ref={this.modalForm}
+            name="modal-form"
           >
-            <Form.Item name="username" label="username">
-              <Input />
+            <Form.Item
+              name="name"
+              label="用户名"
+              validateTrigger="onBlur"
+              rules={
+                [{
+                  required: true,
+                  message: '请输入用户名',
+                }]
+              }
+            >
+              <Input placeholder="请输入用户名" />
             </Form.Item>
-            <Form.Item name="phone" label="phone">
-              <Input />
+            <Form.Item
+              name="phone"
+              label="手机号"
+              validateTrigger="onBlur"
+              rules={
+                [{
+                  required: true,
+                  message: '请输入手机号',
+                }, {
+                  pattern: /^1\d{10}( 1\d{10})*$/,
+                  message: '手机号格式不正确',
+                }]
+              }
+            >
+              <Input placeholder="请输入手机号码" />
+            </Form.Item>
+            <Form.Item
+              name="password"
+              label="密码"
+              validateTrigger="onBlur"
+              rules={
+                [{
+                  required: true,
+                  message: '请输入密码',
+                }, {
+                  min: 6,
+                  max: 24,
+                  message: '密码长度不符合要求',
+                }]
+              }
+            >
+              <Input placeholder="请输入密码(长度6-24位)" />
             </Form.Item>
           </Form>
         </Modal>
-      </React.Fragment>
+      </div >
     )
   }
 }
-
-export default TableBasic
