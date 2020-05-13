@@ -2,6 +2,7 @@ import React from 'react'
 import { Route, Redirect } from "react-router-dom"
 import Login from '../views/login';
 import Admin from '../layout/index';
+import Mbox from '../views/mobx';
 import NotFound from '../views/404';
 import * as Icon from '@ant-design/icons';
 import Dashboard from '../components/Dashboard';
@@ -52,17 +53,19 @@ const routes = [
       {
         path: "/admin/home",
         title: "Dashboard",
+        breadcrumbName: 'Dashboard',
         icon: Icon.DashboardOutlined,
         component: Dashboard,
       },
       {
         path: "/admin/examples",
         title: "Examples",
+        breadcrumbName: 'Examples',
         icon: Icon.BarsOutlined,
         routes: [
           {
             path: "/admin/examples/table-list", // 路由路径
-            // exact: true, // 严格匹配路由
+            breadcrumbName: 'Table',
             title: "Table",
             component: TableBasic,
           },
@@ -75,8 +78,15 @@ const routes = [
           },
           {
             path: "/admin/examples/form",
+            breadcrumbName: 'Form',
             title: "Form",
             component: FormBasic,
+          },
+          {
+            path: "/admin/examples/mobx",
+            breadcrumbName: 'Mbox',
+            title: "Mbox",
+            component: Mbox,
           },
         ]
       },

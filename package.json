@@ -10,6 +10,8 @@
     "axios": "^0.19.2",
     "classnames": "^2.2.6",
     "immutable": "^4.0.0-rc.12",
+    "mobx": "^5.15.4",
+    "mobx-react": "^6.2.2",
     "mockjs": "^1.1.0",
     "moment": "^2.25.3",
     "node-sass": "^4.13.1",
