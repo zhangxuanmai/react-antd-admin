@@ -13,6 +13,7 @@ import {
   Modal,
   Tag,
   Drawer,
+  List,
   message
 } from 'antd';
 import {
@@ -134,6 +135,14 @@ export default class TableBasic extends Component {
   };
 
   render() {
+    const data = [
+      'Racing car sprays burning fuel into crowd.',
+      'Japanese princess to wed commoner.',
+      'Australian walks 100km after outback crash.',
+      'Man charged over missing wedding girl.',
+      'Los Angeles battles huge wildfires.',
+    ];
+
     return (
       <div>
         <Wrapper style={{ paddingBottom: 0 }}>
@@ -313,8 +322,15 @@ export default class TableBasic extends Component {
           onClose={this.onCloseDrawer}
           visible={this.state.visibleDrawer}
         >
-
-          <p>Make things as simple as possible but no simpler.</p>
+          <h4>近七天操作记录</h4>
+          <List
+            dataSource={data}
+            renderItem={item => (
+              <List.Item>
+                {item}
+              </List.Item>
+            )}
+          />
         </Drawer>
       </div >
     )
