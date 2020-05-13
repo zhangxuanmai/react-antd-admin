@@ -1,0 +1,20 @@
+.normal {
+  border: 1px solid #d9d9d9;
+  padding: 3px 12px;
+  border-radius: 2px;
+  cursor: pointer;
+  user-select: none;
+  overflow: hidden;
+}
+
+.check {
+  color: #ffffff;
+  border-color: #1890ff;
+  background-color: #1890ff;
+}
+
+.uncheck {
+  color: rgba(0, 0, 0, 0.65);
+  border-color: #d9d9d9;
+  background-color: #ffffff;
+}
