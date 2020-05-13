@@ -12,6 +12,7 @@ import {
   Col,
   Modal,
   Tag,
+  Drawer,
   message
 } from 'antd';
 import {
@@ -37,6 +38,8 @@ export default class TableBasic extends Component {
     visible: false,
     confirmLoading: false,
     modalTitle: '新增账户',
+
+    visibleDrawer: false,
   }
 
   onSearch = (values) => {
@@ -84,6 +87,10 @@ export default class TableBasic extends Component {
     console.log(params);
   };
 
+  onLogs = (params) => {
+    this.setState({ visibleDrawer: true })
+  }
+
   onModalCancel = (params) => {
     this.setState({ visible: false });
   };
@@ -105,6 +112,10 @@ export default class TableBasic extends Component {
         });
       }, 2000);
     }
+  };
+
+  onCloseDrawer = () => {
+    this.setState({ visibleDrawer: false });
   };
 
   doFetch() {
@@ -222,6 +233,8 @@ export default class TableBasic extends Component {
                     >
                       <a>删除</a>
                     </Popconfirm>
+                    <Divider type="vertical" />
+                    <a onClick={this.onLogs}>操作日志</a>
                   </span>
                 )
               }}
@@ -291,6 +304,18 @@ export default class TableBasic extends Component {
             </Form.Item>
           </Form>
         </Modal>
+
+        <Drawer
+          width={320}
+          placement="right"
+          closable={false}
+          destroyOnClose={true}
+          onClose={this.onCloseDrawer}
+          visible={this.state.visibleDrawer}
+        >
+
+          <p>Make things as simple as possible but no simpler.</p>
+        </Drawer>
       </div >
     )
   }
