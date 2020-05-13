@@ -47,7 +47,7 @@ function ContentComponent(props) {
         >
           <div style={{ position: 'relative' }}>
             <div style={{ position: 'absolute', top: 0, right: 0, left: 0, margin: 24 }}>
-              {JSON.stringify(breadcrumb)}
+              {/* {JSON.stringify(breadcrumb)} */}
               <Breadcrumb style={{ marginBottom: 24 }}>
                 <Breadcrumb.Item>Home</Breadcrumb.Item>
                 <Breadcrumb.Item>
