@@ -37,13 +37,17 @@ const Admin = ({ location, logout, loginStatus, routes }) => {
   const defaultOpenKeys = useMemo(() => {
     return [selectedKeys[0].split('/').slice(0, -1).join('/')]
   }, [selectedKeys])
-  
+
   const handleLogout = () => { logout() }
 
   if (loginStatus) {
     return (
       <Layout>
-        <Siderbar routes={routes} defaultOpenKeys={defaultOpenKeys} selectedKeys={selectedKeys} />
+        <Siderbar
+          routes={routes}
+          defaultOpenKeys={defaultOpenKeys}
+          selectedKeys={selectedKeys}
+        />
         <Layout style={{ minHeight: '100vh' }} >
           <Headerbar handleLogout={handleLogout} />
           <Content routes={routes} />
