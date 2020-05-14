@@ -1,14 +1,16 @@
 import React from 'react'
 import { Route, Redirect } from "react-router-dom"
-import Login from '../views/login';
-import Admin from '../layout/index';
-import Mbox from '../views/mobx';
-import NotFound from '../views/404';
 import * as Icon from '@ant-design/icons';
+import LoginPage from '../views/login';
+import AdminPage from '../layout/index';
+import MboxPage from '../views/mobx';
+import NotMatchPage from '../views/404';
+
 import Dashboard from '../components/Dashboard';
 import TableBasic from '../components/TableBasic';
 import FormBasic from '../components/FormBasic';
 import Descriptions from '../components/Descriptions';
+import MapAuto from '../components/Map';
 
 const RouteWithSubRoutes = route => {
   return (
@@ -35,15 +37,15 @@ const routes = [
   {
     path: '/',
     exact: true,
-    component: Login,
+    component: LoginPage,
   },
   {
     path: '/login',
-    component: Login,
+    component: LoginPage,
   },
   {
     path: '/admin',
-    component: Admin,
+    component: AdminPage,
     routes: [
       {
         path: '/admin',
@@ -86,17 +88,23 @@ const routes = [
             path: "/admin/examples/mobx",
             breadcrumbName: 'Mbox',
             title: "Mbox",
-            component: Mbox,
+            component: MboxPage,
+          },
+          {
+            path: "/admin/examples/map",
+            breadcrumbName: 'Map',
+            title: "Map",
+            component: MapAuto,
           },
         ]
       },
       {
-        component: NotFound
+        component: NotMatchPage
       }
     ]
   },
   {
-    component: NotFound
+    component: NotMatchPage
   }
 ]
 

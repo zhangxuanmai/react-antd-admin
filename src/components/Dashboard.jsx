@@ -25,8 +25,6 @@ export class Home extends Component {
             </Col>
           </Row>
         </WrapperSection>
-
-
       </React.Fragment>
     )
   }
