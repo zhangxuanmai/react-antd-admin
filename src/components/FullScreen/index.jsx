@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { FullscreenExitOutlined, ExpandOutlined } from '@ant-design/icons'
-import { fullScreen, fullExit } from "../../utils/fullScreen";
+import { isSupportFull, fullScreen, fullExit } from "../../utils/fullScreen";
 
 function FullScree() {
   const [status, setStatus] = useState(false)
 
   useEffect(() => {
-    window.addEventListener('resize', isFullScreen)
-    return () => window.removeEventListener('resize', isFullScreen)
+    // window.addEventListener('resize', isFullScreen)
+    // return () => window.removeEventListener('resize', isFullScreen)
   })
 
   const isFullScreen = () => {
@@ -23,11 +23,13 @@ function FullScree() {
   };
 
   const onFull = () => {
+    if (!isSupportFull()) return;
     fullScreen();
     setStatus(true);
   };
 
   const onExit = () => {
+    if (!isSupportFull()) return;
     fullExit();
     setStatus(false);
   };

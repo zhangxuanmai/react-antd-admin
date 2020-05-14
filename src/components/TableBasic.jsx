@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import Wrapper from '../components/WrapperSection';
 import {
   Form,
@@ -20,19 +22,19 @@ import {
   SearchOutlined,
   PlusOutlined
 } from '@ant-design/icons';
+import { actions } from '../store/table'
 import axios from 'axios';
 
 const { RangePicker } = DatePicker;
 const { Column } = Table;
 
-export default class TableBasic extends Component {
+class TableBasic extends Component {
   form = React.createRef();
   modalForm = React.createRef();
 
   state = {
     loading: false,
     data: [],
-    current: 1,
     defaultPageSize: 15,
     total: 0,
 
@@ -43,15 +45,16 @@ export default class TableBasic extends Component {
     visibleDrawer: false,
   }
 
-  onSearch = (values) => {
-    console.log('form:', values);
-    console.log('state:', this.state);
-    this.doFetch()
+  onSearch = async () => {
+    const values = await this.form.current.getFieldsValue()
+    await this.props.changeInitialValues(values)
+    await this.props.changeCurrent(1)
+    await this.doFetch();
   };
 
   onTableChange = async (pagination) => {
     const { current } = pagination;
-    await this.setState({ current });
+    await this.props.changeCurrent(current)
     await this.doFetch();
   };
 
@@ -68,7 +71,7 @@ export default class TableBasic extends Component {
       modalTitle: '编辑账户',
       visible: true
     });
-    this.modalForm.current.setFieldsValue({
+    await this.modalForm.current.setFieldsValue({
       name,
       password,
       phone,
@@ -78,9 +81,7 @@ export default class TableBasic extends Component {
   onDetail = ({ id }) => {
     this.props.history.push({
       pathname: '/admin/examples/table-details',
-      state: {
-        id
-      }
+      state: { id }
     })
   };
 
@@ -101,9 +102,7 @@ export default class TableBasic extends Component {
 
     if (result) {
       // const values = this.modalForm.current.getFieldsValue()
-      this.setState({
-        confirmLoading: true,
-      });
+      this.setState({ confirmLoading: true });
 
       setTimeout(() => {
         message.success('操作成功')
@@ -130,11 +129,23 @@ export default class TableBasic extends Component {
     })
   };
 
-  componentDidMount() {
-    this.doFetch()
+  async componentDidMount() {
+    if (this.props.history.action === 'PUSH') {
+      await this.props.changeInitialValues({})
+      await this.form.current.resetFields()
+      await this.props.changeCurrent(1)
+    }
+
+    await this.setState({ loading: true })
+    await this.doFetch();
   };
 
   render() {
+    const {
+      current,
+      initialValues,
+    } = this.props.projectStore
+
     const data = [
       'Racing car sprays burning fuel into crowd.',
       'Japanese princess to wed commoner.',
@@ -150,6 +161,7 @@ export default class TableBasic extends Component {
             name="advanced_search"
             ref={this.form}
             onFinish={this.onSearch}
+            initialValues={initialValues}
           >
             <Row gutter={24}>
               <Col span={6}>
@@ -195,7 +207,7 @@ export default class TableBasic extends Component {
             onChange={this.onTableChange}
             pagination={{
               position: ['bottomCenter'],
-              current: this.state.current,
+              current: current,
               defaultPageSize: this.state.defaultPageSize,
               total: this.state.total
             }}
@@ -203,7 +215,7 @@ export default class TableBasic extends Component {
             <Column
               title="序号"
               dataIndex="index"
-              render={(text, record, index) => `${((this.state.current - 1) * this.state.defaultPageSize) + (index + 1)}`}
+              render={(text, record, index) => `${((current - 1) * this.state.defaultPageSize) + (index + 1)}`}
             />
             <Column title="用户名" dataIndex="name" />
             <Column title="手机号码" dataIndex="phone" />
@@ -222,18 +234,18 @@ export default class TableBasic extends Component {
               render={(text, record) => {
                 return (
                   <span>
-                    <span onClick={() => this.onEdit(record)}>编辑</span>
+                    <span style={{ cursor: 'pointer' }} onClick={() => this.onEdit(record)}>编辑</span>
                     <Divider type="vertical" />
-                    <span onClick={() => this.onDetail(record)}>详情</span>
+                    <span style={{ cursor: 'pointer' }} onClick={() => this.onDetail(record)}>详情</span>
                     <Divider type="vertical" />
                     <Popconfirm
                       title="确定删除吗?"
                       onConfirm={() => this.onDelete(record)}
                     >
-                      <span>删除</span>
+                      <span style={{ cursor: 'pointer' }}>删除</span>
                     </Popconfirm>
                     <Divider type="vertical" />
-                    <span onClick={this.onLogs}>操作日志</span>
+                    <span style={{ cursor: 'pointer' }} onClick={this.onLogs}>操作日志</span>
                   </span>
                 )
               }}
@@ -326,3 +338,14 @@ export default class TableBasic extends Component {
     )
   }
 }
+
+export default connect((state) => {
+  return {
+    projectStore: state.get('project').toJS()
+  }
+}, (dispatch) => {
+  return {
+    changeCurrent: bindActionCreators(actions.currentAction, dispatch),
+    changeInitialValues: bindActionCreators(actions.initialValuesAction, dispatch)
+  }
+})(TableBasic)

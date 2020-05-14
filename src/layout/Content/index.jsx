@@ -12,8 +12,11 @@ function paths(routes, path) {
 
   const findPath = (routes, path) => {
     let route = routes.find(item => {
-      if (item.path === path) return true
-      if (item.routes) return findPath(item.routes, path)
+      if (item.path === path) {
+        return item.path === path
+      } else {
+        return findPath(item.routes || [], path)
+      }
     })
     rts.push(route)
     return route
@@ -55,7 +58,7 @@ function ContentComponent(props) {
                   breadcrumbs.map((item, i) => {
                     return (
                       <Breadcrumb.Item key={i}>
-                        {item.breadcrumbName}
+                        {item && item.breadcrumbName}
                       </Breadcrumb.Item>
                     )
                   })

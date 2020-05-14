@@ -1,4 +1,4 @@
-export const judgeIsSupportFull = () => {
+export const isSupportFull = () => {
   let result = false;
   let element = document.documentElement;
 
