@@ -10,6 +10,7 @@ class MobxDemo extends Component {
     return (
       <Wrapper>
         <Provider store={store}>
+          <h2>Mobx Example:</h2>
           <Box></Box>
         </Provider>
       </Wrapper>

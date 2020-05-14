@@ -3,23 +3,25 @@ import { Switch, withRouter } from 'react-router-dom'
 import { Layout, Breadcrumb } from 'antd'
 import { TransitionGroup, CSSTransition } from 'react-transition-group'
 import { createBasicRoutes } from '../../router'
-// import style from './index.module.css'
+import style from './index.module.css'
 
 const { Content } = Layout
 
-const findTitle = (routes, path) => {
-  const arr = routes.map(item => {
-    if (item.path === path) {
-      return item
-    }
-    if (item.routes) {
-      return findTitle(item.routes, path)
-    }
-  })
-  return arr.find(i => i)
+function paths(routes, path) {
+  let rts = []
+
+  const findPath = (routes, path) => {
+    let route = routes.find(item => {
+      if (item.path === path) return true
+      if (item.routes) return findPath(item.routes, path)
+    })
+    rts.push(route)
+    return route
+  }
+
+  findPath(routes, path)
+  return rts.reverse()
 }
-
-
 
 function ContentComponent(props) {
   const { routes, location } = props
@@ -28,12 +30,12 @@ function ContentComponent(props) {
     return location.pathname
   }, [location])
 
-  const breadcrumb = useMemo(() => {
-    return findTitle(routes, location.pathname)
+  const breadcrumbs = useMemo(() => {
+    return paths(routes, location.pathname)
   }, [location.pathname, routes])
 
   return (
-    <Content>
+    <Content className={style.content}>
       <TransitionGroup>
         <CSSTransition
           key={key}
@@ -45,14 +47,19 @@ function ContentComponent(props) {
           }}
           timeout={600}
         >
-          <div style={{ position: 'relative' }}>
-            <div style={{ position: 'absolute', top: 0, right: 0, left: 0, margin: 24 }}>
-              {/* {JSON.stringify(breadcrumb)} */}
+          <div className={style.relative}>
+            <div className={style.absolute}>
               <Breadcrumb style={{ marginBottom: 24 }}>
                 <Breadcrumb.Item>Home</Breadcrumb.Item>
-                <Breadcrumb.Item>
-                  <a href="">{breadcrumb.breadcrumbName}</a>
-                </Breadcrumb.Item>
+                {
+                  breadcrumbs.map((item, i) => {
+                    return (
+                      <Breadcrumb.Item key={i}>
+                        {item.breadcrumbName}
+                      </Breadcrumb.Item>
+                    )
+                  })
+                }
               </Breadcrumb>
               <Switch location={location}>
                 {createBasicRoutes(routes)}
@@ -66,3 +73,4 @@ function ContentComponent(props) {
 }
 
 export default withRouter(ContentComponent)
+

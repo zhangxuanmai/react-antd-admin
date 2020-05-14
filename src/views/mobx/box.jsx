@@ -8,7 +8,7 @@ class Box extends Component {
   render() {
     return (
       <div>
-        <h2>Mobx Example:</h2>
+        
         <p>
           count:{this.props.store.message}
         </p>

@@ -106,6 +106,7 @@ export class FormBasic extends Component {
     return (
       <div>
         <WrapperSection style={{ marginBottom: 0 }}>
+          <h2>Form Example:</h2>
           <Form
             name="basic"
             ref={this.form}

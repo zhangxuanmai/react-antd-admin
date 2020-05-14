@@ -220,30 +220,20 @@ export default class TableBasic extends Component {
               title="操作"
               key="action"
               render={(text, record) => {
-                const { status } = record
-                const title = status ? '确定禁用该账户吗?' : '确定启用该账户吗?'
-                const txt = status ? '禁用' : '启用'
                 return (
                   <span>
-                    <a onClick={() => this.onEdit(record)}>编辑</a>
+                    <span onClick={() => this.onEdit(record)}>编辑</span>
                     <Divider type="vertical" />
-                    <a onClick={() => this.onDetail(record)}>详情</a>
-                    <Divider type="vertical" />
-                    <Popconfirm
-                      title={title}
-                      onConfirm={() => this.onDelete(record)}
-                    >
-                      <a>{txt}</a>
-                    </Popconfirm>
+                    <span onClick={() => this.onDetail(record)}>详情</span>
                     <Divider type="vertical" />
                     <Popconfirm
                       title="确定删除吗?"
                       onConfirm={() => this.onDelete(record)}
                     >
-                      <a>删除</a>
+                      <span>删除</span>
                     </Popconfirm>
                     <Divider type="vertical" />
-                    <a onClick={this.onLogs}>操作日志</a>
+                    <span onClick={this.onLogs}>操作日志</span>
                   </span>
                 )
               }}
@@ -322,7 +312,7 @@ export default class TableBasic extends Component {
           onClose={this.onCloseDrawer}
           visible={this.state.visibleDrawer}
         >
-          <h4>近七天操作记录</h4>
+          <h4>操作记录</h4>
           <List
             dataSource={data}
             renderItem={item => (

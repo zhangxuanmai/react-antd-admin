@@ -1,12 +1,13 @@
-import React, { useMemo } from "react";
+import React, { useMemo } from "react"
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { actionCreators } from '../store/login'
-import { Redirect } from "react-router-dom";
-import { Layout } from 'antd';
+import { Redirect } from "react-router-dom"
+import { Layout } from 'antd'
 import Siderbar from './Siderbar'
-import Headerbar from './Headerbar';
-import Content from './Content';
+import Headerbar from './Headerbar'
+import Content from './Content'
+import style from './index.module.css'
 
 const createAllPathArr = (routes) => {
   let _ = []
@@ -48,7 +49,7 @@ const Admin = ({ location, logout, loginStatus, routes }) => {
           defaultOpenKeys={defaultOpenKeys}
           selectedKeys={selectedKeys}
         />
-        <Layout style={{ minHeight: '100vh' }} >
+        <Layout className={style.main} >
           <Headerbar handleLogout={handleLogout} />
           <Content routes={routes} />
         </Layout>

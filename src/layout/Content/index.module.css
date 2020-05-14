@@ -1,4 +1,15 @@
 .content {
-  margin: 24px 24px 0;
+  margin: 24px 24px 0 24px;
 }
 
+.relative {
+  position: relative;
+}
+
+.absolute {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  margin: 24;
+}
