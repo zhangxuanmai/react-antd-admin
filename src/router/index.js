@@ -10,7 +10,6 @@ import Dashboard from '../components/Dashboard';
 import TableBasic from '../components/TableBasic';
 import FormBasic from '../components/FormBasic';
 import Descriptions from '../components/Descriptions';
-import MapAuto from '../components/Map';
 
 const RouteWithSubRoutes = route => {
   return (
@@ -89,12 +88,6 @@ const routes = [
             breadcrumbName: 'Mbox',
             title: "Mbox",
             component: MboxPage,
-          },
-          {
-            path: "/admin/examples/map",
-            breadcrumbName: 'Map',
-            title: "Map",
-            component: MapAuto,
           },
         ]
       },

@@ -10,8 +10,13 @@
 .main {
   width: 280px;
   padding: 32px;
-  background-color: rgb(251, 251, 251);
-  box-shadow: 0 0 14px 1px rgb(231, 231, 231);
+  /* background-color: rgb(251, 251, 251);
+box-shadow: 0 0 14px 1px rgb(231, 231, 231); */
+
+  border-radius: 10px;
+  background: linear-gradient(145deg, #e6e6e6, #ffffff);
+  box-shadow: 24px 24px 48px #e0e0e0,
+    -24px -24px 48px #ffffff;
 }
 
 .form {
