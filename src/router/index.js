@@ -4,6 +4,7 @@ import * as Icon from '@ant-design/icons';
 import LoginPage from '../views/login';
 import AdminPage from '../layout/index';
 import MboxPage from '../views/mobx';
+import LifeCycelPage from '../views/lifecycel';
 import NotMatchPage from '../views/404';
 
 import Dashboard from '../components/Dashboard';
@@ -88,6 +89,12 @@ const routes = [
             breadcrumbName: 'Mbox',
             title: "Mbox",
             component: MboxPage,
+          },
+          {
+            path: "/admin/examples/lifecycel",
+            breadcrumbName: 'LifeCycel',
+            title: "LifeCycel",
+            component: LifeCycelPage,
           },
         ]
       },
