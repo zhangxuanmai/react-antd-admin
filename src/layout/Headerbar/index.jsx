@@ -3,7 +3,6 @@ import { Layout, Menu, Dropdown, Avatar, Badge, } from 'antd'
 import { PoweroffOutlined, UserOutlined, BellOutlined } from '@ant-design/icons'
 import PropTypes from 'prop-types'
 import style from './index.module.css'
-import FullScreen from '../../components/FullScreen/index';
 
 const { Header } = Layout
 
@@ -19,9 +18,6 @@ function Headerbar({ handleLogout }) {
 
   return (
     <Header className={style.header}>
-      <div className={style.block}>
-        <FullScreen />
-      </div>
       <div className={style.block}>
         <Badge dot>
           <BellOutlined />
